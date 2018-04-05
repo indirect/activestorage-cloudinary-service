@@ -1,0 +1,24 @@
+{
+  "name": "activestorage-cloudinary",
+  "version": "1.0.0-beta",
+  "description": "Attach Cloudinary files in Rails applications",
+  "main": "js/index.js",
+  "files": [
+    "js/*.js"
+  ],
+  "homepage": "https://github.com/indirect/activestorage-cloudinary-service",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/indirect/activestorage-cloudinary-service"
+  },
+  "bugs": {
+    "url": "https://github.com/indirect/activestorage-cloudinary-service/issues"
+  },
+  "author": "André Arko <andre@arko.net>",
+  "license": "MIT",
+  "dependencies": {
+    "spark-md5": "^3.0.0"
+  },
+  "scripts": {
+  }
+}
