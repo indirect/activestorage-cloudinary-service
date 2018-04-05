@@ -1,5 +1,5 @@
 require 'cloudinary'
-require 'open-uri'
+require 'http'
 
 module ActiveStorage
   class Service::CloudinaryService < Service
@@ -23,18 +23,16 @@ module ActiveStorage
 
     # Return the content of the file at the +key+.
     def download(key)
-      tmp_file = open(url_for_public_id(key))
+      url = url_for_public_id(key)
+
       if block_given?
         instrument :streaming_download, key: key do
-          File.open(tmp_file, 'rb') do |file|
-            while (data = file.read(64.kilobytes))
-              yield data
-            end
-          end
+          body = HTTP.get(url).body
+          yield data while (data = body.readpartial)
         end
       else
         instrument :download, key: key do
-          File.binread tmp_file
+          HTTP.get(url).to_s
         end
       end
     end
