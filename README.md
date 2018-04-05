@@ -2,7 +2,7 @@
 
 With **v5.2**, Rails introduces [ActiveStorage](https://github.com/rails/rails/blob/master/activestorage/README.md), to facilitate uploading files to cloud services and attaching those files to ActiveRecord objects. Out of the box, it comes with implementations for cloud storage services; Amazon S3, Google Cloud Storage, and Microsoft Azure Storage; with an extendible adapter for adding support for other storage services.
 
-This gem extends the ActiveStorage::Service api with an implementation for [Cloudinary](https://cloudinary.com/) cloud service. The implementation is a thin wrapper around the official [cloudinary gem](https://github.com/cloudinary/cloudinary_gem) to provide necessary interfaces required to hook up cloudinary to the active_storage api. Serving as a middleman, it interprets active_storage requests and delegate to their cloudinary gem contemporary and parses the response as necessary. So you can work with Cloudinary much like you would any of the other active_storage services that comes out of the box.
+This gem extends the ActiveStorage::Service api with an implementation for [Cloudinary](https://cloudinary.com/) cloud service. The implementation is a thin wrapper around the official [cloudinary gem](https://github.com/cloudinary/cloudinary_gem) to provide necessary interfaces required to hook up cloudinary to the `active_storage` api. Serving as a middleman, it interprets `active_storage` requests and delegate to their cloudinary gem contemporary and parses the response as necessary. So you can work with Cloudinary much like you would any of the other `active_storage` services that comes out of the box.
 
 ## Installation
 
@@ -22,7 +22,7 @@ In your Rails 5.2+ app, run:
 ```shell
   rails active_storage:install
 ```
-This copy's over the active_storage migration for creating the needed tables and then run:
+This copies over the `active_storage` migration for creating the needed tables and then run:
 ```shell
   rails db:migrate
 ```
@@ -70,9 +70,9 @@ config.active_storage.service = :cloudinary
 ```
 
 ## Known issues
-Currently, active_storage client-side upload doesn't work with Cloudinary. This because the cloudinary api doesn't, as at now, support the `PUT` request method used by [activestorage.js](https://github.com/rails/rails/blob/master/activestorage/app/javascript/activestorage/blob_upload.js#L9) library and as such client side uploads will error out with the message `Method PUT is not allowed by Access-Control-Allow-Methods in preflight response.`
+Currently, `active_storage` client-side upload doesn't work with Cloudinary. This because the cloudinary api doesn't, as at now, support the `PUT` request method used by [activestorage.js](https://github.com/rails/rails/blob/master/activestorage/app/javascript/activestorage/blob_upload.js#L9) library and as such client side uploads will error out with the message `Method PUT is not allowed by Access-Control-Allow-Methods in preflight response.`
 
-Nevertheless, the necessary ground work for this is set and once either active_storage is updated to support more request type or Cloudinary enables support for `PUT` request method, it should work fine.
+Nevertheless, the necessary ground work for this is set and once either `active_storage` is updated to support more request type or Cloudinary enables support for `PUT` request method, it should work fine.
 
 
 ## Contributing
