@@ -9,7 +9,6 @@ This gem extends the ActiveStorage::Service api with an implementation for [Clou
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'cloudinary', require: false
 gem 'activestorage-cloudinary-service'
 ```
 
