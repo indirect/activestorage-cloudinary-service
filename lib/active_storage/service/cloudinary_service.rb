@@ -77,25 +77,25 @@ module ActiveStorage
       end
     end
 
-    # Returns a signed, temporary URL that a direct upload file can be PUT to on the +key+.
-    # The URL will be valid for the amount of seconds specified in +expires_in+.
-    # You must also provide the +content_type+, +content_length+, and +checksum+ of the file
-    # that will be uploaded. All these attributes will be validated by the service upon upload.
+    # Returns a signed, temporary URL that a direct upload file can be POSTed to for the +key+.
+    # Cloudinary ignores +expires_in+, +content_type+, +content_length+, and +checksum+.
+    # Signed URLs will be valid for exactly one hour.
     def url_for_direct_upload(key, expires_in:, content_type:, content_length:, checksum:)
       instrument :url_for_direct_upload, key: key do
-        options = {
-          expires_in: expires_in,
-          content_type: content_type,
-          content_length: content_length,
-          checksum: checksum
-        }
-        direct_upload_url_for_public_id(key, options)
+        Cloudinary::Utils.cloudinary_api_url("upload", resource_type: "auto")
       end
     end
 
     # Returns a Hash of headers for +url_for_direct_upload+ requests.
     def headers_for_direct_upload(key, filename:, content_type:, content_length:, checksum:)
-      { 'Content-Type' => content_type, 'X-Unique-Upload-Id' => key }
+      params = { timestamp: Time.now.to_i, public_id: key }
+      api_secret = Cloudinary.config.api_secret
+      signature = Cloudinary::Utils.api_sign_request(params, api_secret)
+
+      params.merge(
+        api_key: Cloudinary.config.api_key,
+        signature: signature,
+      )
     end
 
     private
@@ -118,15 +118,6 @@ module ActiveStorage
 
     def url_for_public_id(public_id)
       Cloudinary::Api.resource(public_id)['secure_url']
-    end
-
-    # FIXME: Cloudinary Ruby SDK does't expose an api for signed upload url
-    # The expected url is similar to the private_download_url
-    # with download replaced with upload
-    def direct_upload_url_for_public_id(public_id, options)
-      # allow the server to auto detect the resource_type
-      options[:resource_type] ||= 'auto'
-      signed_download_url_for_public_id(public_id, options).sub(/download/, 'upload')
     end
 
     def signed_download_url_for_public_id(public_id, options)
