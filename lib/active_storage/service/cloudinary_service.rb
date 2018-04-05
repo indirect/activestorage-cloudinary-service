@@ -35,6 +35,12 @@ module ActiveStorage
       end
     end
 
+    def download_chunk(key, range)
+      url = url_for_public_id(key)
+      range = "bytes=#{range.begin}-#{range.exclude_end? ? range.end - 1 : range.end}"
+      HTTP[range: range].get(url).to_s
+    end
+
     # Delete the file at the +key+.
     def delete(key)
       instrument :delete, key: key do
