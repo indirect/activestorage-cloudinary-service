@@ -39,6 +39,17 @@ cloudinary:
   api_secret: <%= ENV['CLOUDINARY_API_SECRET'] %>
 ```
 
+If using the `CLOUDINARY_URL` env var, extract the needed information from the URL.
+
+```yaml
+<% config = URI.parse ENV.fetch("CLOUDINARY_URL") %>
+cloudinary:
+  service: Cloudinary
+  cloud_name: <%= config.host %>
+  api_key: <%= config.user %>
+  api_secret: <%= config.password %>
+```
+
 The env vars should correspond to their appropriate values as defined in your app. Or using `rails credentials:edit` to set the cloudinary secrets `(as cloudinary:cloud_name|api_key|api_secret)`
 ```yaml
 cloudinary:
